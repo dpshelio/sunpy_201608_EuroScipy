@@ -1,0 +1,54 @@
+* SSW
+** Number of 'pro' files
+   - find:
+     find . -type f -iname '*.pro' | wc -l # 28273
+   - within idl:
+     sswloc,'pro', filelist, count
+     print, count # 27140
+   - Using database online:
+     search for nothing on: http://www.lmsal.com/solarsoft/sswdoc/sswdoc_jtop.html # 26829
+     This is just the ones with documentation.
+
+** Size of the library:
+   - du in the machine:
+     du -hs  # 9.6 GB
+   - Request new installation with all and copy the result table:
+     20.75 GB
+
+** repeated file names
+   - unix way:
+     find . -type f -iname '*pro' -printf '%f \n' > /tmp/idlfiles # to get just the name without path
+     wc -l /tmp/idlfiles   # 28275
+     sort /tmp/idlfiles | tr '[:upper:]' '[:lower:]' | uniq | wc -l  # 23686  (4589) 
+     sort /tmp/idlfiles | uniq | grep -c '2.pro'  # 553
+     sort /tmp/idlfiles |  grep  -c '^\.'    #   73 files that start with '.'
+
+** Other files properties
+  - unix way:
+    find . -type f -printf '%f \n' > /tmp/idlfiles_all # all files
+    wc -l /tmp/idlfiles_all  # 135070 files
+    # remove ._blah files:  sed -i '/^\._/d' idlfiles_all  # 129444
+    # remove repeated: sort idlfiles_all | tr '[:upper:]' '[:lower:]' |  uniq | wc -l  # 111297  (18147 repeated)
+    # files per extension:
+    sort idlfiles_all | tr '[:upper:]' '[:lower:]' |  uniq > idlfiles_all_unique
+    rev idlfiles_all_unique | cut -d . -f1 | rev | sort | uniq -c | sort -n | less 
+       23612 pro                      2109 c                    
+       19988 dat                      1856 fits                 
+       12486 fts                      1649 html                 
+        7585 sav                      1248 pdf                  
+        6733 bc                       1050 cdf                  
+        5414 log                       812 png                  
+        4176 doc                       617 f                    
+        4153 idoc                      465 rrparams             
+        2484 txt                       465 diparams             
+        2273 ana                       449 genx                 
+
+
+
+
+
+
+
+
+
+
